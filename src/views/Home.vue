@@ -1,47 +1,64 @@
 <template>
-  <div class="main-home">
+  <div v-if="!isLoading" class="main-home">
+    <AddTodo @reload="getTodo"/>
     <form action="">
       <div v-for="todo in todos" :key="todo.id">
-       <CardTodo :content="todo.content"/>
+        <CardTodo :todo="todo" @reload="getTodo" />
       </div>
     </form>
-    <div class="list-item">
-    
-    </div>
+    <div class="list-item"></div>
+  </div>
+  <div v-else>
+    <h1>Loading ....</h1>
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import CardTodo from "../components/CardTodo";
+import AddTodo from "../components/AddTodo";
+import { url, auth } from "../constants";
 export default {
-  components: { CardTodo },
+  components: { CardTodo, AddTodo },
   data() {
     return {
       todos: [],
+      isLoading: true,
     };
   },
+  methods: {
+    async getTodo() {
+      console.log("home todo");
+      const response = await axios.get(url, {
+        headers: { Authorization: auth },
+      });
+      console.log(response.data);
+      this.todos = response.data.filter((todo) => todo.status === "active");
+      this.isLoading = false;
+    },
+
+  },
   mounted() {
-    console.log("mounted");
-    const url = "https://todo-mvc-api-typeorm.herokuapp.com/api/todos";
-    const auth =
-      "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE1MTk5ZDBiLWE2NTQtNGFlZS1iYWRhLWUyZTI4MTM4NTcyYSIsImlhdCI6MTYxNjY1NDMzNiwiZXhwIjoxNjE3MjU5MTM2fQ.S8akmG2NcE8hVeiXEo548i-aofp91gA5vVH7la4sq_A";
     const getTodo = async () => {
       const response = await axios.get(url, {
         headers: { Authorization: auth },
       });
-
-      this.todos = response.data;
+      console.log(response.data);
+      this.todos = response.data.filter((todo) => todo.status === "active");
+      this.isLoading = false;
     };
     getTodo();
+  },
+  unmounted() {
+    this.todos = [];
   },
 };
 </script>
 
 <style>
-.main-home{
-    width:80%;
-    margin: auto;
-    margin-top: 30px;
+.main-home {
+  width: 80%;
+  margin: auto;
+  margin-top: 30px;
 }
 </style>
