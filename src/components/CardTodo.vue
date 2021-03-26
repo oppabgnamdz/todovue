@@ -41,61 +41,55 @@ import {
   CONFIRM,
   EDIT,
 } from "../constants";
+import { ref } from "vue";
 export default {
   props: ["todo"],
   components: { Button },
-  data() {
+  setup(props, context) {
+    const showModelEdit = ref(false);
+    const textEdit = ref("");
+    const eventEdit = async (id) => {
+      const response = await axios.put(
+        `${url}/${id}`,
+        { content: textEdit.value },
+        {
+          headers: { Authorization: auth },
+        }
+      );
+      if (response.status === 200) {
+        context.emit("reload");
+        toggleModal();
+      }
+    };
+    const toggleModal = () => {
+      showModelEdit.value = !showModelEdit.value;
+    };
+    const eventDelete = async (id) => {
+      const response = await axios.delete(`${url}/${id}`, {
+        headers: { Authorization: auth },
+      });
+      if (response.status === 204) {
+        context.emit("reload");
+      }
+    };
     return {
-      showModelEdit: false,
-      textEdit: "",
+      showModelEdit,
+      textEdit,
       BG_COLOR_DELETE,
       BG_COLOR_EDIT,
       BG_COLOR_CONFIRM,
       DELETE,
       CONFIRM,
       EDIT,
+      eventDelete,
+      toggleModal,
+      eventEdit,
     };
-  },
-  methods: {
-    clickDelete(e) {
-      console.log("click me", e);
-    },
-
-    eventEdit(id) {
-      const editTodo = async () => {
-        const response = await axios.put(
-          `${url}/${id}`,
-          { content: this.textEdit },
-          {
-            headers: { Authorization: auth },
-          }
-        );
-        if (response.status === 200) {
-          this.$emit("reload");
-          this.toggleModal();
-        }
-      };
-      editTodo();
-    },
-    toggleModal() {
-      this.showModelEdit = !this.showModelEdit;
-    },
-    eventDelete(id) {
-      const deleteTodo = async () => {
-        const response = await axios.delete(`${url}/${id}`, {
-          headers: { Authorization: auth },
-        });
-        if (response.status === 204) {
-          this.$emit("reload");
-        }
-      };
-      deleteTodo();
-    },
   },
 };
 </script>
 
-<style scope>
+<style scoped>
 .card {
   display: flex;
   justify-content: space-between;
@@ -104,35 +98,11 @@ export default {
   padding: 10px;
   margin-top: 20px;
 }
-.card__actions--delete {
-  background-color: #cc434a;
-  padding: 10px;
-  color: white;
-  border: none;
-  margin: 0 10px;
-  border-radius: 5px;
-}
-.card__actions--edit {
-  background-color: #51a452;
-  padding: 10px;
-  color: white;
-  border: none;
-  margin: 0 10px;
-  border-radius: 5px;
-}
+
 .content {
   margin-left: 20px;
 }
-.btn-edit {
-  background: cyan;
-  padding: 10px;
-  border: none;
-  margin: 10px;
-  border-radius: 10px;
-}
-button:focus {
-  outline: none;
-}
+
 .edit-text {
   padding: 10px;
   width: 60%;

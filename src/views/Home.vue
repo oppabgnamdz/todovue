@@ -25,15 +25,16 @@ export default {
     const todos = ref([]);
     const isLoading = ref(true);
     const getTodo = async () => {
+      isLoading.value = true;
       const response = await axios.get(url, {
         headers: { Authorization: auth },
       });
-      todos.value = response.data.sort((todo1,todo2) => {
-        let dateTime1 = new Date(todo1['created_at'])
-        let dateTime2 = new Date(todo2['created_at'])
-        let time1 =  dateTime1.getTime();
+      todos.value = response.data.sort((todo1, todo2) => {
+        let dateTime1 = new Date(todo1["created_at"]);
+        let dateTime2 = new Date(todo2["created_at"]);
+        let time1 = dateTime1.getTime();
         let time2 = dateTime2.getTime();
-        return time1-time2
+        return time1 - time2;
       });
       isLoading.value = false;
     };

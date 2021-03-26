@@ -13,7 +13,7 @@
 <script>
 export default {
   props: ["content", "bgColor",'clickEvent',"id"],
-  setup() {},
+  
 };
 </script>
 
