@@ -1,20 +1,24 @@
 <template>
   <div class="add-todo">
     <input class="add-text" type="text" v-model="text" />
-    <button @click="addTodo" class="btn-add">Add</button>
+    <Button :bgColor="BG_COLOR_ADD" :content="ADD" :clickEvent="addTodo" />
   </div>
 </template>
 
 <script>
 import { url, auth } from "../constants";
 import axios from "axios";
+import Button from "./Button";
+import { ADD, BG_COLOR_ADD } from "../constants";
 export default {
+  components: { Button },
   data() {
     return {
       text: "",
+      ADD,
+      BG_COLOR_ADD,
     };
   },
-
   methods: {
     addTodo() {
       const postTodo = async () => {
@@ -27,7 +31,7 @@ export default {
         );
 
         if (response.status === 201) {
-          console.log('reload');
+          console.log("reload");
           this.$emit("reload");
         }
       };

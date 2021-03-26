@@ -5,37 +5,62 @@
       <span class="content">{{ todo.content }}</span>
     </div>
     <div class="card__actions">
-      <button
-        @click.prevent="eventDelete(todo.id)"
-        class="card__actions--delete"
-      >
-        DELETE
-      </button>
-      <button @click.prevent="toggleModal" class="card__actions--edit">
-        EDIT
-      </button>
+      <Button
+        :bgColor="BG_COLOR_DELETE"
+        :content="DELETE"
+        :clickEvent="eventDelete"
+        :id="todo.id"
+      />
+      <Button
+        :bgColor="BG_COLOR_EDIT"
+        :content="EDIT"
+        :clickEvent="toggleModal"
+      />
     </div>
   </div>
   <div v-if="showModelEdit" class="edit-todo">
     <input class="edit-text" type="text" v-model="textEdit" />
-    <button @click.prevent="eventEdit(todo.id)" class="btn-edit">
-      Confirm
-    </button>
+    <Button
+      :bgColor="BG_COLOR_CONFIRM"
+      :content="CONFIRM"
+      :clickEvent="eventEdit"
+      :id="todo.id"
+    />
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import { url, auth } from "../constants";
+import Button from "./Button";
+import {
+  BG_COLOR_DELETE,
+  BG_COLOR_CONFIRM,
+  BG_COLOR_EDIT,
+  DELETE,
+  CONFIRM,
+  EDIT,
+} from "../constants";
 export default {
   props: ["todo"],
+  components: { Button },
   data() {
     return {
       showModelEdit: false,
       textEdit: "",
+      BG_COLOR_DELETE,
+      BG_COLOR_EDIT,
+      BG_COLOR_CONFIRM,
+      DELETE,
+      CONFIRM,
+      EDIT,
     };
   },
   methods: {
+    clickDelete(e) {
+      console.log("click me", e);
+    },
+
     eventEdit(id) {
       const editTodo = async () => {
         const response = await axios.put(
@@ -45,8 +70,8 @@ export default {
             headers: { Authorization: auth },
           }
         );
-        if(response.status===200){
-          this.$emit('reload');
+        if (response.status === 200) {
+          this.$emit("reload");
           this.toggleModal();
         }
       };
