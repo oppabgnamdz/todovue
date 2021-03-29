@@ -2,7 +2,7 @@
   <div class="card">
     <div class="card__content">
       <input type="checkbox" />
-      <span class="content">{{ todo.content }}</span>
+      <input @keydown.enter.prevent="enterInput" ref="focusEdittext" class="content"  v-model="content"  />
     </div>
     <div class="card__actions">
       <Button
@@ -17,15 +17,6 @@
         :clickEvent="toggleModal"
       />
     </div>
-  </div>
-  <div v-if="showModelEdit" class="edit-todo">
-    <input class="edit-text" type="text" v-model="textEdit" />
-    <Button
-      :bgColor="BG_COLOR_CONFIRM"
-      :content="CONFIRM"
-      :clickEvent="eventEdit"
-      :id="todo.id"
-    />
   </div>
 </template>
 
@@ -46,23 +37,24 @@ export default {
   props: ["todo"],
   components: { Button },
   setup(props, context) {
-    const showModelEdit = ref(false);
-    const textEdit = ref("");
+    const content = ref(props.todo.content);
+   
+    const focusEdittext = ref("");
     const eventEdit = async (id) => {
       const response = await axios.put(
         `${url}/${id}`,
-        { content: textEdit.value },
+        { content: content.value },
         {
           headers: { Authorization: auth },
         }
       );
       if (response.status === 200) {
         context.emit("reload");
-        toggleModal();
+      
       }
     };
     const toggleModal = () => {
-      showModelEdit.value = !showModelEdit.value;
+      focusEdittext.value.focus();
     };
     const eventDelete = async (id) => {
       const response = await axios.delete(`${url}/${id}`, {
@@ -72,9 +64,11 @@ export default {
         context.emit("reload");
       }
     };
+    const enterInput = ()=>{
+      eventEdit(props.todo.id)
+    }
     return {
-      showModelEdit,
-      textEdit,
+      content,
       BG_COLOR_DELETE,
       BG_COLOR_EDIT,
       BG_COLOR_CONFIRM,
@@ -84,6 +78,8 @@ export default {
       eventDelete,
       toggleModal,
       eventEdit,
+      focusEdittext,
+      enterInput
     };
   },
 };
@@ -101,6 +97,11 @@ export default {
 
 .content {
   margin-left: 20px;
+  border: none;
+  padding: 10px;
+}
+.content:focus {
+  outline: none;
 }
 
 .edit-text {
