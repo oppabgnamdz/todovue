@@ -1,53 +1,39 @@
 <template>
   <div class="add-todo">
     <input class="add-text" type="text" v-model="text" />
-    <button @click="addTodo" class="btn-add">Add</button>
+    <Button :bgColor="BG_COLOR_ADD" :content="ADD" :clickEvent="addTodo" />
   </div>
 </template>
 
 <script>
 import { url, auth } from "../constants";
 import axios from "axios";
+import Button from "./Button";
+import { ADD, BG_COLOR_ADD } from "../constants";
+import { ref } from "vue";
 export default {
-  data() {
-    return {
-      text: "",
-    };
-  },
-
-  methods: {
-    addTodo() {
-      const postTodo = async () => {
-        const response = await axios.post(
-          url,
-          { content: this.text },
-          {
-            headers: { Authorization: auth },
-          }
-        );
-
-        if (response.status === 201) {
-          console.log('reload');
-          this.$emit("reload");
+  components: { Button },
+  setup(props, context) {
+    let text = ref("");
+    const addTodo = async () => {
+      const response = await axios.post(
+        url,
+        { content: text.value },
+        {
+          headers: { Authorization: auth },
         }
-      };
-      postTodo();
-    },
+      );
+      if (response.status === 201) {
+        context.emit("reload");
+      }
+    };
+
+    return { text, ADD, BG_COLOR_ADD, addTodo };
   },
 };
 </script>
 
 <style scoped>
-.btn-add {
-  background: #2e7df4;
-  padding: 10px;
-  border: none;
-  margin: 10px;
-  border-radius: 10px;
-}
-.btn-add:focus {
-  outline: none;
-}
 .add-text {
   padding: 10px;
 }

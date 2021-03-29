@@ -1,6 +1,6 @@
 <template>
   <div v-if="!isLoading" class="main-home">
-    <AddTodo @reload="getTodo"/>
+    <AddTodo @reload="getTodo" />
     <form action="">
       <div v-for="todo in todos" :key="todo.id">
         <CardTodo :todo="todo" @reload="getTodo" />
@@ -18,39 +18,33 @@ import axios from "axios";
 import CardTodo from "../components/CardTodo";
 import AddTodo from "../components/AddTodo";
 import { url, auth } from "../constants";
+import { onMounted, ref, onUnmounted } from "vue";
 export default {
   components: { CardTodo, AddTodo },
-  data() {
-    return {
-      todos: [],
-      isLoading: true,
-    };
-  },
-  methods: {
-    async getTodo() {
-      console.log("home todo");
-      const response = await axios.get(url, {
-        headers: { Authorization: auth },
-      });
-      console.log(response.data);
-      this.todos = response.data.filter((todo) => todo.status === "active");
-      this.isLoading = false;
-    },
-
-  },
-  mounted() {
+  setup() {
+    const todos = ref([]);
+    const isLoading = ref(true);
     const getTodo = async () => {
+      isLoading.value = true;
       const response = await axios.get(url, {
         headers: { Authorization: auth },
       });
-      console.log(response.data);
-      this.todos = response.data.filter((todo) => todo.status === "active");
-      this.isLoading = false;
+      todos.value = response.data.sort((todo1, todo2) => {
+        let dateTime1 = new Date(todo1["created_at"]);
+        let dateTime2 = new Date(todo2["created_at"]);
+        let time1 = dateTime1.getTime();
+        let time2 = dateTime2.getTime();
+        return time1 - time2;
+      });
+      isLoading.value = false;
     };
-    getTodo();
-  },
-  unmounted() {
-    this.todos = [];
+    onMounted(() => {
+      getTodo();
+    });
+    onUnmounted(() => {
+      todos.value = [];
+    });
+    return { todos, isLoading, getTodo };
   },
 };
 </script>
