@@ -1,15 +1,17 @@
 <template>
-  <div v-if="!isLoading" class="main-home">
-    <AddTodo @reload="getTodo" />
-    <form action="">
-      <div v-for="todo in todos" :key="todo.id">
-        <CardTodo :todo="todo" @reload="getTodo" />
-      </div>
-    </form>
-    <div class="list-item"></div>
-  </div>
-  <div v-else>
-    <h1>Loading ....</h1>
+  <div class="main-home">
+    <div :class="{ blur: isLoading }">
+      <AddTodo @reload="getTodo" />
+      <form action="">
+        <div v-for="todo in todos" :key="todo.id">
+          <CardTodo :todo="todo" @reload="getTodo" />
+        </div>
+      </form>
+      <div class="list-item"></div>
+    </div>
+    <div class="loading" v-if="isLoading">
+      <h1>Loading ....</h1>
+    </div>
   </div>
 </template>
 
@@ -55,4 +57,18 @@ export default {
   margin: auto;
   margin-top: 30px;
 }
+.blur {
+  opacity: 0.2;
+}
+.loading {
+  display: flex;
+  height: 100vh;
+  width: 80%;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  position: fixed;
+  top: 0vh;
+}
+
 </style>
