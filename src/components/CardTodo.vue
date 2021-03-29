@@ -4,31 +4,37 @@
       <input type="checkbox" />
       <input
         @blur.prevent="blurInput"
-        @focus.prevent="focusInput"
+        @focus.prevent="editInput"
         @keydown.enter.prevent="enterInput"
-        ref="focusEdittext"
+        ref="input"
         class="content"
         v-model="content"
       />
     </div>
     <div class="card__actions">
       <Button
-        v-if="confirmButton"
+        v-if="_onFocusInput"
         :bgColor="BG_COLOR_CONFIRM"
         :content="CONFIRM"
         :clickEvent="enterInput"
-       
       />
       <Button
+        v-if="_onFocusInput"
+        :bgColor="BG_COLOR_CANCEL"
+        :content="CANCEL"
+      />
+      <Button
+        v-if="!_onFocusInput"
         :bgColor="BG_COLOR_DELETE"
         :content="DELETE"
         :clickEvent="eventDelete"
         :id="todo.id"
       />
       <Button
+        v-if="!_onFocusInput"
         :bgColor="BG_COLOR_EDIT"
         :content="EDIT"
-        :clickEvent="toggleModal"
+        :clickEvent="editInput"
       />
     </div>
   </div>
@@ -52,10 +58,29 @@ export default {
   components: { Button },
   setup(props, context) {
     const content = ref(props.todo.content);
-    const focusEdittext = ref("");
-    const confirmButton = ref(false);
-    const eventEdit = async (id) => {
-       console.log('eventE');
+    const input = ref("");
+    const _onFocusInput = ref(false);
+    const editInput = () => {
+      input.value.focus();
+      _onFocusInput.value = true;
+    };
+    const blurInput = () => {
+      setTimeout(() => {
+        _onFocusInput.value = false;
+      }, 500);
+    };
+     const enterInput = () => {
+      eventEdit(props.todo.id);
+    };
+    const eventDelete = async (id) => {
+      const response = await axios.delete(`${url}/${id}`, {
+        headers: { Authorization: auth },
+      });
+      if (response.status === 204) {
+        context.emit("reload");
+      }
+    };
+     const eventEdit = async (id) => {
       const response = await axios.put(
         `${url}/${id}`,
         { content: content.value },
@@ -67,47 +92,23 @@ export default {
         context.emit("reload");
       }
     };
-    const toggleModal = () => {
-      focusEdittext.value.focus();
-      confirmButton.value = true;
-    };
-    const focusInput = () => {
-      confirmButton.value = true;
-    };
-    const blurInput = () => {
-      setTimeout(()=>{
-        confirmButton.value = false;
-      },500)
-    };
-    const eventDelete = async (id) => {
-      const response = await axios.delete(`${url}/${id}`, {
-        headers: { Authorization: auth },
-      });
-      if (response.status === 204) {
-        context.emit("reload");
-      }
-    };
-    const enterInput = () => {
-    
-      eventEdit(props.todo.id);
-      
-    };
     return {
       content,
       BG_COLOR_DELETE: BACKGROUND_COLOR.BG_COLOR_DELETE,
       BG_COLOR_EDIT: BACKGROUND_COLOR.BG_COLOR_EDIT,
       BG_COLOR_CONFIRM: BACKGROUND_COLOR.BG_COLOR_CONFIRM,
+      BG_COLOR_CANCEL: BACKGROUND_COLOR.BG_COLOR_CANCEL,
       DELETE: BUTTON_LABEL.DELETE,
       CONFIRM: BUTTON_LABEL.CONFIRM,
       EDIT: BUTTON_LABEL.EDIT,
+      CANCEL:BUTTON_LABEL.CANCEL,
       eventDelete,
-      toggleModal,
+      editInput,
       eventEdit,
-      focusEdittext,
+      input,
       enterInput,
-      confirmButton,
+      _onFocusInput,
       blurInput,
-      focusInput,
     };
   },
 };
@@ -127,12 +128,11 @@ export default {
   margin-left: 20px;
   border: none;
   padding: 10px;
-  transition: 0.4s ease-in-out;
+  transition: 0.5s ease-in-out;
 }
 .content:focus {
   outline: none;
   font-size: 24px;
-  border-radius: 12px;
 }
 
 .edit-text {

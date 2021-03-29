@@ -9,7 +9,7 @@
 import { url, auth } from "../constants";
 import axios from "axios";
 import Button from "./Button";
-import {BUTTON_LABEL,BACKGROUND_COLOR } from "../constants";
+import { BUTTON_LABEL, BACKGROUND_COLOR } from "../constants";
 import { ref } from "vue";
 export default {
   components: { Button },
@@ -28,7 +28,12 @@ export default {
       }
     };
 
-    return { text, ADD:BUTTON_LABEL.ADD, BG_COLOR_ADD:BACKGROUND_COLOR.BG_COLOR_ADD, addTodo };
+    return {
+      text,
+      ADD: BUTTON_LABEL.ADD,
+      BG_COLOR_ADD: BACKGROUND_COLOR.BG_COLOR_ADD,
+      addTodo,
+    };
   },
 };
 </script>
