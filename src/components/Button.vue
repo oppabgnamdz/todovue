@@ -12,8 +12,7 @@
 
 <script>
 export default {
-  // ["content", "bgColor", "clickEvent", "id"]
-  props: {
+ props: {
     content: {
       type: String,
       required: true,
@@ -49,8 +48,9 @@ export default {
   transition: 0.4s;
 }
 .default:hover {
-  transform: scale(1.1);
+  transform: scale(1.2);
   cursor: pointer;
+  border: none;
 }
 .default:focus {
   outline: none;
