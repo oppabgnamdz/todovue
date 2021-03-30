@@ -41,11 +41,10 @@
 </template>
 
 <script>
-import axios from "axios";
-import { url, auth } from "../constants";
 import Button from "./Button";
 import { BUTTON_LABEL, BACKGROUND_COLOR } from "../constants";
 import { ref } from "vue";
+import { useStore } from "vuex";
 export default {
   props: {
     todo: {
@@ -56,42 +55,35 @@ export default {
     },
   },
   components: { Button },
-  setup(props, context) {
+  setup(props) {
+    const store = useStore();
     const content = ref(props.todo.content);
     const input = ref("");
     const _onFocusInput = ref(false);
+
     const editInput = () => {
       input.value.focus();
       _onFocusInput.value = true;
     };
+
     const blurInput = () => {
       setTimeout(() => {
         _onFocusInput.value = false;
       }, 500);
     };
+
     const enterInput = () => {
       eventEdit(props.todo.id);
     };
-    const eventDelete = async (id) => {
-      const response = await axios.delete(`${url}/${id}`, {
-        headers: { Authorization: auth },
-      });
-      if (response.status === 204) {
-        context.emit("reload");
-      }
+
+    const eventDelete = (id) => {
+      store.dispatch("deleteTodo", id);
     };
+
     const eventEdit = async (id) => {
-      const response = await axios.put(
-        `${url}/${id}`,
-        { content: content.value },
-        {
-          headers: { Authorization: auth },
-        }
-      );
-      if (response.status === 200) {
-        context.emit("reload");
-      }
+      store.dispatch("updateTodos", { id, content: content.value });
     };
+
     return {
       content,
       BG_COLOR_DELETE: BACKGROUND_COLOR.BG_COLOR_DELETE,
@@ -111,7 +103,7 @@ export default {
       blurInput,
     };
   },
-};
+}
 </script>
 
 <style scoped>

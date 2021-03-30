@@ -1,10 +1,10 @@
 <template>
   <div class="main-home">
     <div :class="{ blur: isLoading }">
-      <AddTodo @reload="getTodo" />
+      <AddTodo />
       <form action="">
         <div v-for="todo in todos" :key="todo.id">
-          <CardTodo :todo="todo" @reload="getTodo" />
+          <CardTodo :todo="todo" />
         </div>
       </form>
       <div class="list-item"></div>
@@ -18,7 +18,7 @@
 <script>
 import CardTodo from "../components/CardTodo";
 import AddTodo from "../components/AddTodo";
-import { onMounted, ref, onUnmounted, computed, watch } from "vue";
+import { onMounted, onUnmounted, computed, ref } from "vue";
 import { useStore } from "vuex";
 export default {
   components: { CardTodo, AddTodo },
@@ -26,21 +26,15 @@ export default {
     const store = useStore();
     const todos = computed(() => store.state.todos.todos);
     const isLoading = ref(true);
-    const getTodo = () => {
-      isLoading.value = true;
-      store.dispatch("getTodos");
-    };
-    watch(todos, () => {
-      isLoading.value = false;
-    });
     onMounted(() => {
       store.dispatch("getTodos");
       isLoading.value = false;
     });
+
     onUnmounted(() => {
       todos.value = [];
     });
-    return { todos, isLoading, getTodo };
+    return { todos, isLoading };
   },
 };
 </script>
