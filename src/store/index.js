@@ -1,8 +1,7 @@
-import Vuex from "vuex";
+import {createStore} from "vuex";
 import todos from "./modules/Todo";
-const store = new Vuex.Store({
-  modules: {
-    todos,
-  },
-});
-export default store;
+export default createStore({
+    modules:{
+        todos
+    }
+})

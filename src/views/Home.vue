@@ -16,33 +16,26 @@
 </template>
 
 <script>
-import axios from "axios";
 import CardTodo from "../components/CardTodo";
 import AddTodo from "../components/AddTodo";
-import { url, auth } from "../constants";
-import { onMounted, ref, onUnmounted } from "vue";
-// import { mapActions } from 'vuex'
+import { onMounted, ref, onUnmounted, computed, watch } from "vue";
+import { useStore } from "vuex";
 export default {
   components: { CardTodo, AddTodo },
   setup() {
-    const todos = ref([]);
+    const store = useStore();
+    const todos = computed(() => store.state.todos.todos);
     const isLoading = ref(true);
-    const getTodo = async () => {
+    const getTodo = () => {
       isLoading.value = true;
-      const response = await axios.get(url, {
-        headers: { Authorization: auth },
-      });
-      todos.value = response.data.sort((todo1, todo2) => {
-        let dateTime1 = new Date(todo1["created_at"]);
-        let dateTime2 = new Date(todo2["created_at"]);
-        let time1 = dateTime1.getTime();
-        let time2 = dateTime2.getTime();
-        return time1 - time2;
-      });
-      isLoading.value = false;
+      store.dispatch("getTodos");
     };
+    watch(todos, () => {
+      isLoading.value = false;
+    });
     onMounted(() => {
-     
+      store.dispatch("getTodos");
+      isLoading.value = false;
     });
     onUnmounted(() => {
       todos.value = [];
@@ -71,5 +64,4 @@ export default {
   position: fixed;
   top: 0vh;
 }
-
 </style>

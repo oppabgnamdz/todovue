@@ -19,6 +19,7 @@ const actions = {
     const response = await axios.get(url, {
       headers: { Authorization: auth },
     });
+    
     const data = response.data.sort((todo1, todo2) => {
       let dateTime1 = new Date(todo1["created_at"]);
       let dateTime2 = new Date(todo2["created_at"]);
