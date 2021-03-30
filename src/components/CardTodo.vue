@@ -41,11 +41,10 @@
 </template>
 
 <script>
-import axios from "axios";
-import { url, auth } from "../constants";
 import Button from "./Button";
 import { BUTTON_LABEL, BACKGROUND_COLOR } from "../constants";
 import { ref } from "vue";
+import { useStore } from "vuex";
 export default {
   props: {
     todo: {
@@ -56,42 +55,35 @@ export default {
     },
   },
   components: { Button },
-  setup(props, context) {
+  setup(props) {
+    const store = useStore();
     const content = ref(props.todo.content);
     const input = ref("");
     const _onFocusInput = ref(false);
+
     const editInput = () => {
       input.value.focus();
       _onFocusInput.value = true;
     };
+
     const blurInput = () => {
       setTimeout(() => {
         _onFocusInput.value = false;
       }, 500);
     };
-     const enterInput = () => {
+
+    const enterInput = () => {
       eventEdit(props.todo.id);
     };
-    const eventDelete = async (id) => {
-      const response = await axios.delete(`${url}/${id}`, {
-        headers: { Authorization: auth },
-      });
-      if (response.status === 204) {
-        context.emit("reload");
-      }
+
+    const eventDelete = (id) => {
+      store.dispatch("deleteTodo", id);
     };
-     const eventEdit = async (id) => {
-      const response = await axios.put(
-        `${url}/${id}`,
-        { content: content.value },
-        {
-          headers: { Authorization: auth },
-        }
-      );
-      if (response.status === 200) {
-        context.emit("reload");
-      }
+
+    const eventEdit = async (id) => {
+      store.dispatch("updateTodos", { id, content: content.value });
     };
+
     return {
       content,
       BG_COLOR_DELETE: BACKGROUND_COLOR.BG_COLOR_DELETE,
@@ -101,7 +93,7 @@ export default {
       DELETE: BUTTON_LABEL.DELETE,
       CONFIRM: BUTTON_LABEL.CONFIRM,
       EDIT: BUTTON_LABEL.EDIT,
-      CANCEL:BUTTON_LABEL.CANCEL,
+      CANCEL: BUTTON_LABEL.CANCEL,
       eventDelete,
       editInput,
       eventEdit,
@@ -111,7 +103,7 @@ export default {
       blurInput,
     };
   },
-};
+}
 </script>
 
 <style scoped>
@@ -128,11 +120,10 @@ export default {
   margin-left: 20px;
   border: none;
   padding: 10px;
-  transition: 0.5s ease-in-out;
 }
 .content:focus {
   outline: none;
-  font-size: 24px;
+  border: 2px solid black;
 }
 
 .edit-text {

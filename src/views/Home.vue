@@ -1,10 +1,10 @@
 <template>
   <div class="main-home">
     <div :class="{ blur: isLoading }">
-      <AddTodo @reload="getTodo" />
+      <AddTodo />
       <form action="">
         <div v-for="todo in todos" :key="todo.id">
-          <CardTodo :todo="todo" @reload="getTodo" />
+          <CardTodo :todo="todo" />
         </div>
       </form>
       <div class="list-item"></div>
@@ -16,37 +16,25 @@
 </template>
 
 <script>
-import axios from "axios";
 import CardTodo from "../components/CardTodo";
 import AddTodo from "../components/AddTodo";
-import { url, auth } from "../constants";
-import { onMounted, ref, onUnmounted } from "vue";
+import { onMounted, onUnmounted, computed, ref } from "vue";
+import { useStore } from "vuex";
 export default {
   components: { CardTodo, AddTodo },
   setup() {
-    const todos = ref([]);
+    const store = useStore();
+    const todos = computed(() => store.state.todos.todos);
     const isLoading = ref(true);
-    const getTodo = async () => {
-      isLoading.value = true;
-      const response = await axios.get(url, {
-        headers: { Authorization: auth },
-      });
-      todos.value = response.data.sort((todo1, todo2) => {
-        let dateTime1 = new Date(todo1["created_at"]);
-        let dateTime2 = new Date(todo2["created_at"]);
-        let time1 = dateTime1.getTime();
-        let time2 = dateTime2.getTime();
-        return time1 - time2;
-      });
-      isLoading.value = false;
-    };
     onMounted(() => {
-      getTodo();
+      store.dispatch("getTodos");
+      isLoading.value = false;
     });
+
     onUnmounted(() => {
       todos.value = [];
     });
-    return { todos, isLoading, getTodo };
+    return { todos, isLoading };
   },
 };
 </script>
@@ -70,5 +58,4 @@ export default {
   position: fixed;
   top: 0vh;
 }
-
 </style>
