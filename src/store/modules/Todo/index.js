@@ -1,7 +1,9 @@
 import axios from "axios";
-import { URL, AUTH } from "../../../constants";
+import { URL } from "../../../constants";
 
-const headers = { Authorization: AUTH };
+const headers = (auth) => {
+  return { headers: { Authorization: auth } };
+};
 const state = {
   todos: [],
 };
@@ -22,8 +24,8 @@ const mutations = {
   },
 };
 const actions = {
-  async getTodos({ commit }) {
-    const response = await axios.get(URL, { headers });
+  async getTodos({ commit }, auth) {
+    const response = await axios.get(URL, headers(auth));
     const data = response.data.sort((todo1, todo2) => {
       let dateTime1 = new Date(todo1["created_at"]);
       let dateTime2 = new Date(todo2["created_at"]);
@@ -34,22 +36,22 @@ const actions = {
     commit("GET_TODOS", data);
   },
 
-  async addTodo({ commit }, content) {
-    const response = await axios.post(URL, { content }, { headers });
+  async addTodo({ commit }, { content, auth }) {
+    const response = await axios.post(URL, { content }, headers(auth));
     if (response.status === 201) {
       commit("ADD_TODOS", response.data);
     }
   },
 
-  async deleteTodo({ commit }, id) {
-    const response = await axios.delete(`${URL}/${id}`, { headers });
+  async deleteTodo({ commit }, { id, auth }) {
+    const response = await axios.delete(`${URL}/${id}`, headers(auth));
     if (response.status === 204) {
       commit("DELETE_TODOS", id);
     }
   },
 
-  async updateTodos({ commit }, { id, content }) {
-    const response = await axios.put(`${URL}/${id}`, { content }, { headers });
+  async updateTodos({ commit }, { id, content,auth }) {
+    const response = await axios.put(`${URL}/${id}`, { content }, headers(auth));
     if (response.status === 200) {
       commit("UPDATE_TODOS", { id, content });
     }
@@ -57,7 +59,7 @@ const actions = {
 };
 
 const getters = {
-  todos: state => state.todos,
+  todos: (state) => state.todos,
 };
 
 const Todos = {

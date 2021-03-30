@@ -27,14 +27,18 @@ export default {
     const todos = computed(() => store.state.todos.todos);
     const isLoading = ref(true);
     onMounted(() => {
-      store.dispatch("getTodos");
+      store.dispatch("getTodos", `Bearer ${localStorage.getItem("token")}`);
       isLoading.value = false;
     });
-
     onUnmounted(() => {
       todos.value = [];
     });
     return { todos, isLoading };
+  },
+  mounted() {
+    console.log("unmouted3");
+    this.$cookie.setCookie("username", "user2");
+    console.log(this.$cookie.getCookie("username"));
   },
 };
 </script>

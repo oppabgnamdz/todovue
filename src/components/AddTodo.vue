@@ -16,7 +16,10 @@ export default {
     let text = ref("");
     const store = useStore();
     const addTodo = () => {
-      store.dispatch("addTodo", text.value);
+      store.dispatch("addTodo", {
+        content: text.value,
+        auth: `Bearer ${localStorage.getItem("token")}`,
+      });
     };
     return {
       text,

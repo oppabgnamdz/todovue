@@ -13,25 +13,25 @@
     </div>
     <div class="card__actions">
       <Button
-        v-if="_onFocusInput"
+        v-if="onFocusInput"
         :bgColor="BG_COLOR_CONFIRM"
         :content="CONFIRM"
         :clickEvent="enterInput"
       />
       <Button
-        v-if="_onFocusInput"
+        v-if="onFocusInput"
         :bgColor="BG_COLOR_CANCEL"
         :content="CANCEL"
       />
       <Button
-        v-if="!_onFocusInput"
+        v-if="!onFocusInput"
         :bgColor="BG_COLOR_DELETE"
         :content="DELETE"
         :clickEvent="eventDelete"
         :id="todo.id"
       />
       <Button
-        v-if="!_onFocusInput"
+        v-if="!onFocusInput"
         :bgColor="BG_COLOR_EDIT"
         :content="EDIT"
         :clickEvent="editInput"
@@ -48,7 +48,7 @@ import { useStore } from "vuex";
 export default {
   props: {
     todo: {
-      type: Function,
+      type: Object,
       default: function () {
         console.log("error todo");
       },
@@ -59,16 +59,16 @@ export default {
     const store = useStore();
     const content = ref(props.todo.content);
     const input = ref("");
-    const _onFocusInput = ref(false);
+    const onFocusInput = ref(false);
 
     const editInput = () => {
       input.value.focus();
-      _onFocusInput.value = true;
+      onFocusInput.value = true;
     };
 
     const blurInput = () => {
       setTimeout(() => {
-        _onFocusInput.value = false;
+        onFocusInput.value = false;
       }, 500);
     };
 
@@ -77,11 +77,18 @@ export default {
     };
 
     const eventDelete = (id) => {
-      store.dispatch("deleteTodo", id);
+      store.dispatch("deleteTodo", {
+        id,
+        auth: `Bearer ${localStorage.getItem("token")}`,
+      });
     };
 
-    const eventEdit = async (id) => {
-      store.dispatch("updateTodos", { id, content: content.value });
+    const eventEdit = (id) => {
+      store.dispatch("updateTodos", {
+        id,
+        content: content.value,
+        auth: `Bearer ${localStorage.getItem("token")}`,
+      });
     };
 
     return {
@@ -99,11 +106,11 @@ export default {
       eventEdit,
       input,
       enterInput,
-      _onFocusInput,
+      onFocusInput,
       blurInput,
     };
   },
-}
+};
 </script>
 
 <style scoped>
