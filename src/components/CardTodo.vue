@@ -69,7 +69,7 @@ export default {
         _onFocusInput.value = false;
       }, 500);
     };
-     const enterInput = () => {
+    const enterInput = () => {
       eventEdit(props.todo.id);
     };
     const eventDelete = async (id) => {
@@ -80,7 +80,7 @@ export default {
         context.emit("reload");
       }
     };
-     const eventEdit = async (id) => {
+    const eventEdit = async (id) => {
       const response = await axios.put(
         `${url}/${id}`,
         { content: content.value },
@@ -101,7 +101,7 @@ export default {
       DELETE: BUTTON_LABEL.DELETE,
       CONFIRM: BUTTON_LABEL.CONFIRM,
       EDIT: BUTTON_LABEL.EDIT,
-      CANCEL:BUTTON_LABEL.CANCEL,
+      CANCEL: BUTTON_LABEL.CANCEL,
       eventDelete,
       editInput,
       eventEdit,
@@ -128,11 +128,10 @@ export default {
   margin-left: 20px;
   border: none;
   padding: 10px;
-  transition: 0.5s ease-in-out;
 }
 .content:focus {
   outline: none;
-  font-size: 24px;
+  border: 2px solid black;
 }
 
 .edit-text {

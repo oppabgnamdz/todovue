@@ -39,7 +39,12 @@ export default {
 </script>
 
 <style scoped>
+.add-todo {
+  display: flex;
+  justify-content: space-around;
+}
 .add-text {
   padding: 10px;
+  width: 70%;
 }
 </style>

@@ -21,6 +21,7 @@ import CardTodo from "../components/CardTodo";
 import AddTodo from "../components/AddTodo";
 import { url, auth } from "../constants";
 import { onMounted, ref, onUnmounted } from "vue";
+// import { mapActions } from 'vuex'
 export default {
   components: { CardTodo, AddTodo },
   setup() {
@@ -41,7 +42,7 @@ export default {
       isLoading.value = false;
     };
     onMounted(() => {
-      getTodo();
+     
     });
     onUnmounted(() => {
       todos.value = [];
