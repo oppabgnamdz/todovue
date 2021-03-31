@@ -35,11 +35,6 @@ export default {
     });
     return { todos, isLoading };
   },
-  mounted() {
-    console.log("unmouted3");
-    this.$cookie.setCookie("username", "user2");
-    console.log(this.$cookie.getCookie("username"));
-  },
 };
 </script>
 

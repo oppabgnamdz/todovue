@@ -79,7 +79,7 @@ export default {
     const eventDelete = (id) => {
       store.dispatch("deleteTodo", {
         id,
-        auth: `Bearer ${localStorage.getItem("token")}`,
+        auth: `Bearer ${store.state.Token.token}`,
       });
     };
 
@@ -87,7 +87,7 @@ export default {
       store.dispatch("updateTodos", {
         id,
         content: content.value,
-        auth: `Bearer ${localStorage.getItem("token")}`,
+        auth: `Bearer ${store.state.Token.token}`,
       });
     };
 
