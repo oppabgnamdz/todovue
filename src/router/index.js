@@ -11,7 +11,6 @@ const requiredAuth = (to, from, next) => {
 };
 const clearToken = (to, from, next) => {
   localStorage.clear();
- 
   next();
 };
 
