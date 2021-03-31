@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home";
-import Todo from "../views/Todos";
 import Page404 from "../views/Page404";
 import SignIn from "../views/SignIn";
 import SignUp from "../views/SignUp";
@@ -25,12 +24,6 @@ const routes = [
     path: "/home",
     name: "Home",
     component: Home,
-    beforeEnter: requiredAuth,
-  },
-  {
-    path: "/todo",
-    name: "Todo",
-    component: Todo,
     beforeEnter: requiredAuth,
   },
   {

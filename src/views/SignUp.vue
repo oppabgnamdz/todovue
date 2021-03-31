@@ -3,11 +3,11 @@
     <h1>Sign up</h1>
     <form class="form">
       <div class="username">
-        <label for="username">User Name</label>
+        <label class="label" for="username">User Name</label>
         <input v-model="userName" type="text" class="input" />
       </div>
       <div class="password">
-        <label for="password">Password</label>
+        <label class="label" for="password">Password</label>
         <input v-model="password" type="password" class="input" />
       </div>
       <Button
@@ -30,14 +30,18 @@ import SignUp from "../utils/SignUp";
 import SignIn from "../utils/SignIn";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
+import '../common/signin.css'
+
 export default {
   components: { Button },
   name: "SignUp",
+
   setup() {
     const store = useStore();
     const userName = ref("");
     const password = ref("");
     const router = useRouter();
+
     const handleSignUp = async () => {
       try {
         const responseSignUp = await SignUp(userName.value, password.value);
@@ -51,7 +55,8 @@ export default {
         console.log(e.message);
         alert("Your account invalid");
       }
-    };
+    }
+
     return {
       BG_COLOR_SIGNUP: BACKGROUND_COLOR.BG_COLOR_SIGNIN,
       SIGNUP: BUTTON_LABEL.SIGNUP,
@@ -69,17 +74,14 @@ export default {
   margin: auto;
 }
 
-label {
+.label {
   display: block;
   margin: 20px;
   font-size: 24px;
   text-align: left;
   margin-left: 0px;
 }
-.username,
-.password {
-  margin: 30px;
-}
+
 .input {
   padding: 10px;
   width: 100%;

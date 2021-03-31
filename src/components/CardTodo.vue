@@ -45,6 +45,7 @@ import Button from "./Button";
 import { BUTTON_LABEL, BACKGROUND_COLOR } from "../constants";
 import { ref } from "vue";
 import { useStore } from "vuex";
+
 export default {
   props: {
     todo: {
@@ -54,7 +55,9 @@ export default {
       },
     },
   },
+
   components: { Button },
+
   setup(props) {
     const store = useStore();
     const content = ref(props.todo.content);
@@ -79,7 +82,7 @@ export default {
     const eventDelete = (id) => {
       store.dispatch("deleteTodo", {
         id,
-        auth: `Bearer ${store.state.Token.token}`,
+        auth: `Bearer ${store.state.token.token}`,
       });
     };
 
@@ -87,7 +90,7 @@ export default {
       store.dispatch("updateTodos", {
         id,
         content: content.value,
-        auth: `Bearer ${store.state.Token.token}`,
+        auth: `Bearer ${store.state.token.token}`,
       });
     };
 

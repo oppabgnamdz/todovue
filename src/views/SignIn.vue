@@ -3,11 +3,11 @@
     <h1>Login</h1>
     <form class="form">
       <div class="username">
-        <label for="username">User Name</label>
+        <label class="label" for="username">User Name</label>
         <input v-model="userName" type="text" class="input" />
       </div>
       <div class="password">
-        <label for="password">Password</label>
+        <label class="label" for="password">Password</label>
         <input v-model="password" type="password" class="input" />
       </div>
       <Button
@@ -29,14 +29,18 @@ import { BUTTON_LABEL, BACKGROUND_COLOR } from "../constants";
 import { useRouter } from "vue-router";
 import SignIn from "../utils/SignIn";
 import { useStore } from "vuex";
+import '../common/signin.css'
+
 export default {
   components: { Button },
   name: "SignIn",
+
   setup() {
     const store = useStore();
     const userName = ref("");
     const password = ref("");
     const router = useRouter();
+
     const handleSignIn = async () => {
       try {
         const responseSignIn = await SignIn(userName.value, password.value);
@@ -49,7 +53,8 @@ export default {
         console.log(e.message);
         alert("Your account invalid");
       }
-    };
+    }
+
     return {
       BG_COLOR_SIGNIN: BACKGROUND_COLOR.BG_COLOR_SIGNIN,
       SIGNIN: BUTTON_LABEL.SIGNIN,
@@ -62,21 +67,18 @@ export default {
 </script>
 
 <style scoped>
+
 .sign-in {
   max-width: 400px;
   margin: auto;
 }
 
-label {
+.label {
   display: block;
   margin: 20px;
   font-size: 24px;
   text-align: left;
   margin-left: 0px;
-}
-.username,
-.password {
-  margin: 30px;
 }
 .input {
   padding: 10px;

@@ -1,9 +1,8 @@
 <template>
-  <nav>
+  <nav class="main-nav">
     <div class="logo-router">
       <div class="logo">Todos</div>
       <router-link :to="{ name: 'Home' }">Home</router-link>
-      <router-link :to="{ name: 'Todo' }">Todo List</router-link>
       <router-link @click="logout" v-show="token" :to="{ name: 'SignIn' }"
         >Log out</router-link
       >
@@ -13,15 +12,15 @@
 </template>
 
 <script>
+
 import { computed } from "vue";
 import { useStore } from "vuex";
+
 export default {
-  name: "App",
-  components: {},
   setup() {
     const store = useStore();
     const token = computed(
-      () => store.state.Token.token || localStorage.getItem("token")
+      () => store.state.token.token || localStorage.getItem("token")
     );
     const logout = () => {
       store.dispatch("addToken", "");
@@ -41,7 +40,7 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
-nav {
+.main-nav {
   background-color: #353a3e;
   padding: 22px 0;
   display: flex;
@@ -54,14 +53,14 @@ nav {
   margin: auto;
 }
 
-nav a {
+.logo-router a {
   color: white;
   text-decoration: none;
   font-size: 24px;
   padding: 10px 20px;
   margin-left: 30px;
 }
-nav a:hover {
+.logo-router a:hover {
   background-color: crimson;
   border-radius: 12px;
   transition: 0.4s;

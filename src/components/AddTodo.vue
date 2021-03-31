@@ -10,8 +10,10 @@ import Button from "./Button";
 import { BUTTON_LABEL, BACKGROUND_COLOR } from "../constants";
 import { ref } from "vue";
 import { useStore } from "vuex";
+
 export default {
   components: { Button },
+
   setup() {
     let text = ref("");
     const store = useStore();
@@ -21,6 +23,7 @@ export default {
         auth: `Bearer ${localStorage.getItem("token")}`,
       });
     };
+
     return {
       text,
       ADD: BUTTON_LABEL.ADD,

@@ -1,5 +1,7 @@
 import axios from "axios";
-import { URL } from "../../../constants";
+import { URL, ROUTER_BASE } from "../../../constants";
+
+const URl_TODOS = URL + ROUTER_BASE.TODOS;
 
 const headers = (auth) => {
   return { headers: { Authorization: auth } };
@@ -25,7 +27,7 @@ const mutations = {
 };
 const actions = {
   async getTodos({ commit }, auth) {
-    const response = await axios.get(URL, headers(auth));
+    const response = await axios.get(URl_TODOS, headers(auth));
     const data = response.data.sort((todo1, todo2) => {
       let dateTime1 = new Date(todo1["created_at"]);
       let dateTime2 = new Date(todo2["created_at"]);
@@ -37,21 +39,25 @@ const actions = {
   },
 
   async addTodo({ commit }, { content, auth }) {
-    const response = await axios.post(URL, { content }, headers(auth));
+    const response = await axios.post(URl_TODOS, { content }, headers(auth));
     if (response.status === 201) {
       commit("ADD_TODOS", response.data);
     }
   },
 
   async deleteTodo({ commit }, { id, auth }) {
-    const response = await axios.delete(`${URL}/${id}`, headers(auth));
+    const response = await axios.delete(`${URl_TODOS}/${id}`, headers(auth));
     if (response.status === 204) {
       commit("DELETE_TODOS", id);
     }
   },
 
-  async updateTodos({ commit }, { id, content,auth }) {
-    const response = await axios.put(`${URL}/${id}`, { content }, headers(auth));
+  async updateTodos({ commit }, { id, content, auth }) {
+    const response = await axios.put(
+      `${URl_TODOS}/${id}`,
+      { content },
+      headers(auth)
+    );
     if (response.status === 200) {
       commit("UPDATE_TODOS", { id, content });
     }

@@ -22,18 +22,24 @@ import { onMounted, onUnmounted, computed, ref } from "vue";
 import { useStore } from "vuex";
 export default {
   components: { CardTodo, AddTodo },
+
   setup() {
     const store = useStore();
     const todos = computed(() => store.state.todos.todos);
     const isLoading = ref(true);
+
     onMounted(() => {
       store.dispatch("getTodos", `Bearer ${localStorage.getItem("token")}`);
+      store.dispatch("addToken", localStorage.getItem("token"));
       isLoading.value = false;
     });
+
     onUnmounted(() => {
       todos.value = [];
     });
+
     return { todos, isLoading };
+    
   },
 };
 </script>
