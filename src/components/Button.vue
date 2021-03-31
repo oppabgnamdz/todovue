@@ -26,7 +26,6 @@ export default {
     clickEvent: {
       type: Function,
       default: function () {
-        console.log("error");
       },
     },
     id: {
