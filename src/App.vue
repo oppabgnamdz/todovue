@@ -20,9 +20,12 @@ export default {
   components: {},
   setup() {
     const store = useStore();
-    const token = computed(() => store.state.Token.token);
+    const token = computed(
+      () => store.state.Token.token || localStorage.getItem("token")
+    );
     const logout = () => {
       store.dispatch("addToken", "");
+      localStorage.clear();
     };
 
     return { token, logout };
