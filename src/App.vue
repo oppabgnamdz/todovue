@@ -4,15 +4,32 @@
       <div class="logo">Todos</div>
       <router-link :to="{ name: 'Home' }">Home</router-link>
       <router-link :to="{ name: 'Todo' }">Todo List</router-link>
+      <router-link @click="logout" v-show="token" :to="{ name: 'SignIn' }"
+        >Log out</router-link
+      >
     </div>
   </nav>
   <router-view />
 </template>
 
 <script>
+import { computed } from "vue";
+import { useStore } from "vuex";
 export default {
   name: "App",
   components: {},
+  setup() {
+    const store = useStore();
+    const token = computed(
+      () => store.state.Token.token || localStorage.getItem("token")
+    );
+    const logout = () => {
+      store.dispatch("addToken", "");
+      localStorage.clear();
+    };
+
+    return { token, logout };
+  },
 };
 </script>
 

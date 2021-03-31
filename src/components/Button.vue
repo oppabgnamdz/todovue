@@ -4,7 +4,7 @@
     :style="{
       background: bgColor,
     }"
-    @click.prevent='clickEvent(id)'
+    @click.prevent="clickEvent(id)"
   >
     {{ content }}
   </button>
@@ -12,8 +12,29 @@
 
 <script>
 export default {
-  props: ["content", "bgColor",'clickEvent',"id"],
-  
+  props: {
+    content: {
+      type: String,
+      required: true,
+      default: "",
+    },
+    bgColor: {
+      type: String,
+      required: true,
+      default: "",
+    },
+    clickEvent: {
+      type: Function,
+      default: function () {
+        console.log("error");
+      },
+    },
+    id: {
+      type: String,
+      required: true,
+      default: "",
+    },
+  },
 };
 </script>
 
@@ -23,7 +44,13 @@ export default {
   border: none;
   margin: 10px;
   border-radius: 10px;
-  color: black;
+  color: white;
+  transition: 0.4s;
+}
+.default:hover {
+  transform: scale(1.2);
+  cursor: pointer;
+  border: none;
 }
 .default:focus {
   outline: none;

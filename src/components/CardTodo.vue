@@ -2,88 +2,112 @@
   <div class="card">
     <div class="card__content">
       <input type="checkbox" />
-      <span class="content">{{ todo.content }}</span>
+      <input
+        @blur.prevent="blurInput"
+        @focus.prevent="editInput"
+        @keydown.enter.prevent="enterInput"
+        ref="input"
+        class="content"
+        v-model="content"
+      />
     </div>
     <div class="card__actions">
       <Button
+        v-if="onFocusInput"
+        :bgColor="BG_COLOR_CONFIRM"
+        :content="CONFIRM"
+        :clickEvent="enterInput"
+      />
+      <Button
+        v-if="onFocusInput"
+        :bgColor="BG_COLOR_CANCEL"
+        :content="CANCEL"
+      />
+      <Button
+        v-if="!onFocusInput"
         :bgColor="BG_COLOR_DELETE"
         :content="DELETE"
         :clickEvent="eventDelete"
         :id="todo.id"
       />
       <Button
+        v-if="!onFocusInput"
         :bgColor="BG_COLOR_EDIT"
         :content="EDIT"
-        :clickEvent="toggleModal"
+        :clickEvent="editInput"
       />
     </div>
-  </div>
-  <div v-if="showModelEdit" class="edit-todo">
-    <input class="edit-text" type="text" v-model="textEdit" />
-    <Button
-      :bgColor="BG_COLOR_CONFIRM"
-      :content="CONFIRM"
-      :clickEvent="eventEdit"
-      :id="todo.id"
-    />
   </div>
 </template>
 
 <script>
-import axios from "axios";
-import { url, auth } from "../constants";
 import Button from "./Button";
-import {
-  BG_COLOR_DELETE,
-  BG_COLOR_CONFIRM,
-  BG_COLOR_EDIT,
-  DELETE,
-  CONFIRM,
-  EDIT,
-} from "../constants";
+import { BUTTON_LABEL, BACKGROUND_COLOR } from "../constants";
 import { ref } from "vue";
+import { useStore } from "vuex";
 export default {
-  props: ["todo"],
+  props: {
+    todo: {
+      type: Object,
+      default: function () {
+        console.log("error todo");
+      },
+    },
+  },
   components: { Button },
-  setup(props, context) {
-    const showModelEdit = ref(false);
-    const textEdit = ref("");
-    const eventEdit = async (id) => {
-      const response = await axios.put(
-        `${url}/${id}`,
-        { content: textEdit.value },
-        {
-          headers: { Authorization: auth },
-        }
-      );
-      if (response.status === 200) {
-        context.emit("reload");
-        toggleModal();
-      }
+  setup(props) {
+    const store = useStore();
+    const content = ref(props.todo.content);
+    const input = ref("");
+    const onFocusInput = ref(false);
+
+    const editInput = () => {
+      input.value.focus();
+      onFocusInput.value = true;
     };
-    const toggleModal = () => {
-      showModelEdit.value = !showModelEdit.value;
+
+    const blurInput = () => {
+      setTimeout(() => {
+        onFocusInput.value = false;
+      }, 500);
     };
-    const eventDelete = async (id) => {
-      const response = await axios.delete(`${url}/${id}`, {
-        headers: { Authorization: auth },
+
+    const enterInput = () => {
+      eventEdit(props.todo.id);
+    };
+
+    const eventDelete = (id) => {
+      store.dispatch("deleteTodo", {
+        id,
+        auth: `Bearer ${store.state.Token.token}`,
       });
-      if (response.status === 204) {
-        context.emit("reload");
-      }
     };
+
+    const eventEdit = (id) => {
+      store.dispatch("updateTodos", {
+        id,
+        content: content.value,
+        auth: `Bearer ${store.state.Token.token}`,
+      });
+    };
+
     return {
-      showModelEdit,
-      textEdit,
-      BG_COLOR_DELETE,
-      BG_COLOR_EDIT,
-      BG_COLOR_CONFIRM,
-      DELETE,
-      CONFIRM,
-      EDIT,
+      content,
+      BG_COLOR_DELETE: BACKGROUND_COLOR.BG_COLOR_DELETE,
+      BG_COLOR_EDIT: BACKGROUND_COLOR.BG_COLOR_EDIT,
+      BG_COLOR_CONFIRM: BACKGROUND_COLOR.BG_COLOR_CONFIRM,
+      BG_COLOR_CANCEL: BACKGROUND_COLOR.BG_COLOR_CANCEL,
+      DELETE: BUTTON_LABEL.DELETE,
+      CONFIRM: BUTTON_LABEL.CONFIRM,
+      EDIT: BUTTON_LABEL.EDIT,
+      CANCEL: BUTTON_LABEL.CANCEL,
       eventDelete,
-      toggleModal,
+      editInput,
       eventEdit,
+      input,
+      enterInput,
+      onFocusInput,
+      blurInput,
     };
   },
 };
@@ -101,6 +125,12 @@ export default {
 
 .content {
   margin-left: 20px;
+  border: none;
+  padding: 10px;
+}
+.content:focus {
+  outline: none;
+  border: 2px solid black;
 }
 
 .edit-text {

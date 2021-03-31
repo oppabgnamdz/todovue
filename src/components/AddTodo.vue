@@ -6,35 +6,38 @@
 </template>
 
 <script>
-import { url, auth } from "../constants";
-import axios from "axios";
 import Button from "./Button";
-import { ADD, BG_COLOR_ADD } from "../constants";
+import { BUTTON_LABEL, BACKGROUND_COLOR } from "../constants";
 import { ref } from "vue";
+import { useStore } from "vuex";
 export default {
   components: { Button },
-  setup(props, context) {
+  setup() {
     let text = ref("");
-    const addTodo = async () => {
-      const response = await axios.post(
-        url,
-        { content: text.value },
-        {
-          headers: { Authorization: auth },
-        }
-      );
-      if (response.status === 201) {
-        context.emit("reload");
-      }
+    const store = useStore();
+    const addTodo = () => {
+      store.dispatch("addTodo", {
+        content: text.value,
+        auth: `Bearer ${localStorage.getItem("token")}`,
+      });
     };
-
-    return { text, ADD, BG_COLOR_ADD, addTodo };
+    return {
+      text,
+      ADD: BUTTON_LABEL.ADD,
+      BG_COLOR_ADD: BACKGROUND_COLOR.BG_COLOR_ADD,
+      addTodo,
+    };
   },
 };
 </script>
 
 <style scoped>
+.add-todo {
+  display: flex;
+  justify-content: space-around;
+}
 .add-text {
   padding: 10px;
+  width: 70%;
 }
 </style>
