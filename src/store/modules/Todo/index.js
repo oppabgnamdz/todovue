@@ -15,13 +15,16 @@ const mutations = {
   GET_TODOS(state, payload) {
     state.todos = payload;
   },
+
   ADD_TODOS(state, payload) {
     state.todos.push(payload);
   },
+
   UPDATE_TODOS(state, { id, content }) {
     const todo = state.todos.find((item) => item.id === id);
     todo.content = content;
   },
+
   DELETE_TODOS(state, id) {
     const newTodos = state.todos.filter((todo) => todo.id !== id);
     state.todos = newTodos;

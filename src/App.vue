@@ -19,9 +19,11 @@ import { useStore } from "vuex";
 export default {
   setup() {
     const store = useStore();
+
     const token = computed(
       () => store.state.token.token || localStorage.getItem("token")
     );
+
     const logout = () => {
       store.dispatch("addToken", "");
       localStorage.clear();
@@ -40,12 +42,14 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
+
 .main-nav {
   background-color: #353a3e;
   padding: 22px 0;
   display: flex;
   align-items: center;
 }
+
 .logo-router {
   display: flex;
   align-items: center;
@@ -60,13 +64,16 @@ export default {
   padding: 10px 20px;
   margin-left: 30px;
 }
+
 .logo-router a:hover {
   background-color: crimson;
   border-radius: 12px;
   transition: 0.4s;
 }
+
 .logo {
   color: white;
   font-size: 30px;
 }
+
 </style>

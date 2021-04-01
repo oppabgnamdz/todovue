@@ -17,6 +17,7 @@ export default {
   setup() {
     let text = ref("");
     const store = useStore();
+    
     const addTodo = () => {
       store.dispatch("addTodo", {
         content: text.value,

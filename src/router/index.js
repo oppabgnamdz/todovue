@@ -8,6 +8,7 @@ const requiredAuth = (to, from, next) => {
   const token = localStorage.getItem("token");
   token ? next() : next({ name: "SignIn" });
 };
+
 const clearToken = (to, from, next) => {
   localStorage.clear();
   next();
