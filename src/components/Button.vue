@@ -36,7 +36,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang='scss'>
 .default {
   padding: 10px;
   border: none;
@@ -44,15 +44,13 @@ export default {
   border-radius: 10px;
   color: white;
   transition: 0.4s;
-}
-
-.default:hover {
-  transform: scale(1.2);
-  cursor: pointer;
-  border: none;
-}
-
-.default:focus {
-  outline: none;
+  &:hover {
+    transform: scale(1.2);
+    cursor: pointer;
+    border: none;
+  }
+  &:focus {
+    outline: none;
+  }
 }
 </style>

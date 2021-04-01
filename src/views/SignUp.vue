@@ -30,7 +30,7 @@ import SignUp from "../utils/SignUp";
 import SignIn from "../utils/SignIn";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
-import '../common/signin.css'
+import "../common/signin.css";
 
 export default {
   components: { Button },
@@ -55,7 +55,7 @@ export default {
         console.log(e.message);
         alert("Your account invalid");
       }
-    }
+    };
 
     return {
       BG_COLOR_SIGNUP: BACKGROUND_COLOR.BG_COLOR_SIGNIN,
@@ -68,29 +68,29 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang='scss'>
 .sign-in {
   max-width: 400px;
   margin: auto;
-}
-
-.label {
-  display: block;
-  margin: 20px;
-  font-size: 24px;
-  text-align: left;
-  margin-left: 0px;
-}
-
-.input {
-  padding: 10px;
-  width: 100%;
-}
-.signup {
-  color: blue;
-  text-decoration: none;
-}
-.signup:hover {
-  cursor: pointer;
+  .form {
+    .label {
+      display: block;
+      margin: 20px;
+      font-size: 24px;
+      text-align: left;
+      margin-left: 0px;
+    }
+    .input {
+      padding: 10px;
+      width: 100%;
+    }
+  }
+  .signup {
+    color: blue;
+    text-decoration: none;
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }
 </style>

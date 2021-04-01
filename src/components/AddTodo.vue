@@ -17,7 +17,7 @@ export default {
   setup() {
     let text = ref("");
     const store = useStore();
-    
+
     const addTodo = () => {
       store.dispatch("addTodo", {
         content: text.value,
@@ -35,14 +35,13 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang='scss'>
 .add-todo {
   display: flex;
   justify-content: space-around;
-}
-
-.add-text {
-  padding: 10px;
-  width: 70%;
+  .add-text {
+    padding: 10px;
+    width: 70%;
+  }
 }
 </style>

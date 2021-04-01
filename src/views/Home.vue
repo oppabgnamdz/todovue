@@ -7,7 +7,6 @@
           <CardTodo :todo="todo" />
         </div>
       </form>
-      <div class="list-item"></div>
     </div>
     <div class="loading" v-if="isLoading">
       <h1>Loading ....</h1>
@@ -43,23 +42,23 @@ export default {
 };
 </script>
 
-<style>
+<style scoped lang='scss'>
 .main-home {
   width: 80%;
   margin: auto;
   margin-top: 30px;
-}
-.blur {
-  opacity: 0.2;
-}
-.loading {
-  display: flex;
-  height: 100vh;
-  width: 80%;
-  justify-content: center;
-  align-items: center;
-  z-index: 100;
-  position: fixed;
-  top: 0vh;
+  .blur {
+    opacity: 0.2;
+  }
+  .loading {
+    display: flex;
+    height: 100vh;
+    width: 80%;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    position: fixed;
+    top: 0vh;
+  }
 }
 </style>

@@ -116,7 +116,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang='scss'>
 .card {
   display: flex;
   justify-content: space-between;
@@ -124,21 +124,16 @@ export default {
   align-items: center;
   padding: 10px;
   margin-top: 20px;
-}
-
-.content {
-  margin-left: 20px;
-  border: none;
-  padding: 10px;
-}
-
-.content:focus {
-  outline: none;
-  border: 2px solid black;
-}
-
-.edit-text {
-  padding: 10px;
-  width: 60%;
+  &__content {
+    .content {
+      margin-left: 20px;
+      border: none;
+      padding: 10px;
+    }
+    &:focus {
+      outline: none;
+      border: 2px solid black;
+    }
+  }
 }
 </style>
