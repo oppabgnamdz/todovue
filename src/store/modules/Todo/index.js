@@ -6,9 +6,11 @@ const URl_TODOS = URL + ROUTER_BASE.TODOS;
 const headers = (auth) => {
   return { headers: { Authorization: auth } };
 };
+
 const state = {
   todos: [],
 };
+
 const mutations = {
   GET_TODOS(state, payload) {
     state.todos = payload;
@@ -25,6 +27,7 @@ const mutations = {
     state.todos = newTodos;
   },
 };
+
 const actions = {
   async getTodos({ commit }, auth) {
     const response = await axios.get(URl_TODOS, headers(auth));

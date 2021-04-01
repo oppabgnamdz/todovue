@@ -131,6 +131,7 @@ export default {
   border: none;
   padding: 10px;
 }
+
 .content:focus {
   outline: none;
   border: 2px solid black;

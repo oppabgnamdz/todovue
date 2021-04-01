@@ -1,9 +1,11 @@
 export const URL = "https://todo-mvc-api-typeorm.herokuapp.com/";
+
 export const ROUTER_BASE = {
   TODOS: "api/todos",
   REGISTER:"auth/register",
   LOGIN:"auth/login",
 };
+
 export const BACKGROUND_COLOR = {
   BG_COLOR_DELETE: "#cc434a",
   BG_COLOR_CONFIRM: "black",

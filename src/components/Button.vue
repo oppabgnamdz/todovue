@@ -25,8 +25,7 @@ export default {
     },
     clickEvent: {
       type: Function,
-      default: function () {
-      },
+      default: function () {},
     },
     id: {
       type: String,
@@ -46,11 +45,13 @@ export default {
   color: white;
   transition: 0.4s;
 }
+
 .default:hover {
   transform: scale(1.2);
   cursor: pointer;
   border: none;
 }
+
 .default:focus {
   outline: none;
 }

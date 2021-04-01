@@ -44,7 +44,6 @@ export default {
     const handleSignIn = async () => {
       try {
         const responseSignIn = await SignIn(userName.value, password.value);
-
         if (responseSignIn.status !== 201) return;
         localStorage.setItem("token", responseSignIn.data.token);
         store.dispatch("addToken", responseSignIn.data.token);
