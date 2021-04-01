@@ -34,6 +34,7 @@ import "../common/signin.css";
 
 export default {
   components: { Button },
+  
   name: "SignUp",
 
   setup() {

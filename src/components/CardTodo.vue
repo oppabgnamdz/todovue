@@ -50,9 +50,7 @@ export default {
   props: {
     todo: {
       type: Object,
-      default: function () {
-        console.log("error todo");
-      },
+      default: function () {}
     },
   },
 

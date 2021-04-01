@@ -38,8 +38,10 @@ const routes = [
     component: Page404,
   },
 ];
+
 const router = createRouter({
   history: createWebHistory(),
   routes,
 });
+
 export default router;

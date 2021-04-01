@@ -6,6 +6,7 @@ const SignUp = async (username, password) => {
     username,
     password,
   });
+  
   return response;
 }
 

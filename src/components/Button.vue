@@ -15,22 +15,18 @@ export default {
   props: {
     content: {
       type: String,
-      required: true,
-      default: "",
+      required: true
     },
     bgColor: {
       type: String,
-      required: true,
-      default: "",
+      required: true
     },
     clickEvent: {
-      type: Function,
-      default: function () {},
+      type: Function
     },
     id: {
       type: String,
-      required: true,
-      default: "",
+      required: true
     },
   },
 };
