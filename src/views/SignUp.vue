@@ -1,7 +1,7 @@
 <template>
   <div class="sign-in">
     <h1>Sign up</h1>
-    <form class="form">
+    <form @submit.prevent='handleSignUp' class="form">
       <div class="username">
         <label class="label" for="username">User Name</label>
         <input v-model="userName" type="text" class="input" />

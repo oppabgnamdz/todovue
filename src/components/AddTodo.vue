@@ -20,8 +20,7 @@ export default {
 
     const addTodo = () => {
       store.dispatch("addTodo", {
-        content: text.value,
-        auth: `Bearer ${localStorage.getItem("token")}`,
+        content: text.value
       });
     };
 

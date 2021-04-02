@@ -79,16 +79,14 @@ export default {
 
     const eventDelete = (id) => {
       store.dispatch("deleteTodo", {
-        id,
-        auth: `Bearer ${store.state.token.token}`,
+        id
       });
     };
 
     const eventEdit = (id) => {
       store.dispatch("updateTodos", {
         id,
-        content: content.value,
-        auth: `Bearer ${store.state.token.token}`,
+        content: content.value
       });
     };
 

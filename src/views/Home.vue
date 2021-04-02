@@ -2,11 +2,9 @@
   <div class="main-home">
     <div :class="{ blur: isLoading }">
       <AddTodo />
-      <form action="">
         <div v-for="todo in todos" :key="todo.id">
           <CardTodo :todo="todo" />
         </div>
-      </form>
     </div>
     <div class="loading" v-if="isLoading">
       <h1>Loading ....</h1>
@@ -27,9 +25,9 @@ export default {
     const todos = computed(() => store.state.todos.todos);
     const isLoading = ref(true);
 
-    onMounted(() => {
-      store.dispatch("getTodos", `Bearer ${localStorage.getItem("token")}`);
-      store.dispatch("addToken", localStorage.getItem("token"));
+    onMounted(async () => {
+      await store.dispatch("getTodos");
+     
       isLoading.value = false;
     });
 

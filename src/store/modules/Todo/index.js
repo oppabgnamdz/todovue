@@ -32,8 +32,11 @@ const mutations = {
 };
 
 const actions = {
-  async getTodos({ commit }, auth) {
-    const response = await axios.get(URl_TODOS, headers(auth));
+  async getTodos({ commit, rootState }) {
+    const response = await axios.get(
+      URl_TODOS,
+      headers(`Bearer ${rootState.token.token}`)
+    );
     const data = response.data.sort((todo1, todo2) => {
       let dateTime1 = new Date(todo1["created_at"]);
       let dateTime2 = new Date(todo2["created_at"]);
@@ -44,25 +47,32 @@ const actions = {
     commit("GET_TODOS", data);
   },
 
-  async addTodo({ commit }, { content, auth }) {
-    const response = await axios.post(URl_TODOS, { content }, headers(auth));
+  async addTodo({ commit, rootState }, { content }) {
+    const response = await axios.post(
+      URl_TODOS,
+      { content },
+      headers(`Bearer ${rootState.token.token}`)
+    );
     if (response.status === 201) {
       commit("ADD_TODOS", response.data);
     }
   },
 
-  async deleteTodo({ commit }, { id, auth }) {
-    const response = await axios.delete(`${URl_TODOS}/${id}`, headers(auth));
+  async deleteTodo({ commit, rootState }, { id }) {
+    const response = await axios.delete(
+      `${URl_TODOS}/${id}`,
+      headers(`Bearer ${rootState.token.token}`)
+    );
     if (response.status === 204) {
       commit("DELETE_TODOS", id);
     }
   },
 
-  async updateTodos({ commit }, { id, content, auth }) {
+  async updateTodos({ commit, rootState }, { id, content }) {
     const response = await axios.put(
       `${URl_TODOS}/${id}`,
       { content },
-      headers(auth)
+      headers(`Bearer ${rootState.token.token}`)
     );
     if (response.status === 200) {
       commit("UPDATE_TODOS", { id, content });
