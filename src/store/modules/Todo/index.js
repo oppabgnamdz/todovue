@@ -29,6 +29,10 @@ const mutations = {
     const newTodos = state.todos.filter((todo) => todo.id !== id);
     state.todos = newTodos;
   },
+  RESET_TODOS(state) {
+    console.log('reset');
+    state.todos = [];
+  },
 };
 
 const actions = {

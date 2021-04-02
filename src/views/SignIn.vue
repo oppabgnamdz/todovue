@@ -1,7 +1,7 @@
 <template>
   <div class="sign-in">
     <h1>Login</h1>
-    <form @submit.prevent='handleSignIn' class="form">
+    <form @submit.prevent="handleSignIn" class="form">
       <div class="username">
         <label class="label" for="username">User Name</label>
         <input v-model="userName" type="text" class="input" />
@@ -19,6 +19,7 @@
     </form>
     <span>If you don't have account. Please </span>
     <router-link :to="{ name: 'SignUp' }" class="signup">Sign up !</router-link>
+    <vue-notification-list position="top-right"></vue-notification-list>
   </div>
 </template>
 
@@ -26,10 +27,8 @@
 import { ref } from "vue";
 import Button from "../components/Button.vue";
 import { BUTTON_LABEL, BACKGROUND_COLOR } from "../constants";
-import { useRouter } from "vue-router";
-import SignIn from "../utils/SignIn";
-import { useStore } from "vuex";
 import "../common/signin.css";
+import useSignIn from "../utils/useSignIn";
 
 export default {
   components: { Button },
@@ -37,24 +36,11 @@ export default {
   name: "SignIn",
 
   setup() {
-    const store = useStore();
     const userName = ref("");
     const password = ref("");
-    const router = useRouter();
 
-    const handleSignIn = async () => {
-      try {
-        const responseSignIn = await SignIn(userName.value, password.value);
-        if (responseSignIn.status !== 201) return;
-        localStorage.setItem("token", responseSignIn.data.token);
-        store.dispatch("addToken", responseSignIn.data.token);
-        router.push({ name: "Home" });
-      } catch (e) {
-        console.log(e.message);
-        alert("Your account invalid");
-      }
-    };
-
+    const handleSignIn =  () => useSignIn(userName.value, password.value)
+    
     return {
       BG_COLOR_SIGNIN: BACKGROUND_COLOR.BG_COLOR_SIGNIN,
       SIGNIN: BUTTON_LABEL.SIGNIN,
@@ -62,6 +48,7 @@ export default {
       password,
       handleSignIn,
     };
+    
   },
 };
 </script>

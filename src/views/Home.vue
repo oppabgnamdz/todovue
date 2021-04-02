@@ -2,9 +2,9 @@
   <div class="main-home">
     <div :class="{ blur: isLoading }">
       <AddTodo />
-        <div v-for="todo in todos" :key="todo.id">
-          <CardTodo :todo="todo" />
-        </div>
+      <div v-for="todo in todos" :key="todo.id">
+        <CardTodo :todo="todo" />
+      </div>
     </div>
     <div class="loading" v-if="isLoading">
       <h1>Loading ....</h1>
@@ -15,7 +15,7 @@
 <script>
 import CardTodo from "../components/CardTodo";
 import AddTodo from "../components/AddTodo";
-import { onMounted, onUnmounted, computed, ref } from "vue";
+import { onMounted, onBeforeMount, computed, ref } from "vue";
 import { useStore } from "vuex";
 export default {
   components: { CardTodo, AddTodo },
@@ -27,12 +27,11 @@ export default {
 
     onMounted(async () => {
       await store.dispatch("getTodos");
-     
       isLoading.value = false;
     });
 
-    onUnmounted(() => {
-      todos.value = [];
+    onBeforeMount(() => {
+      store.commit("RESET_TODOS");
     });
 
     return { todos, isLoading };

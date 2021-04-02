@@ -2,7 +2,7 @@
   <nav class="main-nav">
     <div class="logo-router">
       <div class="logo">Todos</div>
-      <router-link :to="{ name: 'Home' }">Home</router-link>
+      <router-link v-show="token" :to="{ name: 'Home' }">Home</router-link>
       <router-link @click="logout" v-show="token" :to="{ name: 'SignIn' }"
         >Log out</router-link
       >
@@ -20,12 +20,11 @@ export default {
     const store = useStore();
 
     const token = computed(
-      () => store.state.token.token || localStorage.getItem("token")
+      () => store.state.token.token
     );
 
     const logout = () => {
       store.dispatch("addToken", "");
-      localStorage.clear();
     };
 
     return { token, logout };

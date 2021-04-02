@@ -1,7 +1,7 @@
 <template>
   <div class="sign-in">
     <h1>Sign up</h1>
-    <form @submit.prevent='handleSignUp' class="form">
+    <form @submit.prevent="handleSignUp" class="form">
       <div class="username">
         <label class="label" for="username">User Name</label>
         <input v-model="userName" type="text" class="input" />
@@ -20,43 +20,26 @@
       >Back to Sign in !</router-link
     >
   </div>
+  <vue-notification-list position="top-right"></vue-notification-list>
 </template>
 
 <script>
 import { ref } from "vue";
 import Button from "../components/Button.vue";
 import { BUTTON_LABEL, BACKGROUND_COLOR } from "../constants";
-import SignUp from "../utils/SignUp";
-import SignIn from "../utils/SignIn";
-import { useRouter } from "vue-router";
-import { useStore } from "vuex";
 import "../common/signin.css";
+import useSignUp from "../utils/useSignUp";
 
 export default {
   components: { Button },
-  
+
   name: "SignUp",
 
   setup() {
-    const store = useStore();
     const userName = ref("");
     const password = ref("");
-    const router = useRouter();
 
-    const handleSignUp = async () => {
-      try {
-        const responseSignUp = await SignUp(userName.value, password.value);
-        const responseSignIn = await SignIn(userName.value, password.value);
-        if (responseSignUp.status !== 201 || responseSignIn.status !== 201)
-          return;
-        localStorage.setItem("token", responseSignIn.data.token);
-        store.dispatch("addToken", responseSignIn.data.token);
-        router.push({ name: "Home" });
-      } catch (e) {
-        console.log(e.message);
-        alert("Your account invalid");
-      }
-    };
+    const handleSignUp = () => useSignUp(userName.value, password.value);
 
     return {
       BG_COLOR_SIGNUP: BACKGROUND_COLOR.BG_COLOR_SIGNIN,
