@@ -1,32 +1,69 @@
 <template>
-  <button
-    class="default"
-    :style="{
-      background: bgColor,
-    }"
-    @click.prevent="clickEvent(id)"
-  >
-    {{ content }}
+  <button :class="buttonColor" @click.prevent="clickEvent(id)">
+    <slot></slot>
   </button>
 </template>
 
 <script>
 export default {
   props: {
-    content: {
-      type: String,
-      required: true
-    },
     bgColor: {
       type: String,
-      required: true
+      required: true,
     },
     clickEvent: {
-      type: Function
+      type: Function,
     },
     id: {
       type: String,
-      required: true
+      required: true,
+    },
+    typeAdd: {
+      type: Boolean,
+    },
+    typeDelete: {
+      type: Boolean,
+    },
+    typeConfirm: {
+      type: Boolean,
+    },
+    typeEdit: {
+      type: Boolean,
+    },
+    typeSignIn: {
+      type: Boolean,
+    },
+    typeSignUp: {
+      type: Boolean,
+    },
+    typeCancel: {
+      type: Boolean,
+    },
+  },
+  data() {
+    return {
+      d: "default",
+      add: "add",
+      delete: "delete",
+      edit: "edit",
+      confirm: "confirm",
+      signUp: "signup",
+      signIn: "signin",
+      cancel: "cancel",
+    };
+  },
+  computed: {
+    buttonColor: function () {
+      return [
+        this.d,
+        this.typeAdd ? this.add : "",
+        this.typeDelete ? this.delete : "",
+        this.typeConfirm ? this.confirm : "",
+        this.typeSignIn ? this.signIn : "",
+        this.typeSignUp ? this.signUp : "",
+        this.typeEdit ? this.edit : "",
+        this.typeCancel ? this.cancel : "",
+      ];
     },
   },
 };
@@ -48,5 +85,24 @@ export default {
   &:focus {
     outline: none;
   }
+}
+.add {
+  background: #2e7df4;
+}
+.delete {
+  background: #cc434a;
+}
+.edit {
+  background: #51a452;
+}
+.confirm {
+  background: black;
+}
+.signup,
+.signin {
+  background: crimson;
+}
+.cancel {
+  background: purple;
 }
 </style>

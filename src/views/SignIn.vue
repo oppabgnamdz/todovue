@@ -10,12 +10,7 @@
         <label class="label" for="password">Password</label>
         <input v-model="password" type="password" class="input" />
       </div>
-      <Button
-        :bgColor="BG_COLOR_SIGNIN"
-        :content="SIGNIN"
-        :clickEvent="handleSignIn"
-        >Sign in</Button
-      >
+      <Button typeSignIn :clickEvent="handleSignIn">SIGN IN</Button>
     </form>
     <span>If you don't have account. Please </span>
     <router-link :to="{ name: 'SignUp' }" class="signup">Sign up !</router-link>
@@ -26,7 +21,6 @@
 <script>
 import { ref } from "vue";
 import Button from "../components/Button.vue";
-import { BUTTON_LABEL, BACKGROUND_COLOR } from "../constants";
 import "../common/signin.css";
 import useSignIn from "../utils/useSignIn";
 
@@ -39,16 +33,13 @@ export default {
     const userName = ref("");
     const password = ref("");
 
-    const handleSignIn =  () => useSignIn(userName.value, password.value)
-    
+    const handleSignIn = () => useSignIn(userName.value, password.value);
+
     return {
-      BG_COLOR_SIGNIN: BACKGROUND_COLOR.BG_COLOR_SIGNIN,
-      SIGNIN: BUTTON_LABEL.SIGNIN,
       userName,
       password,
       handleSignIn,
     };
-    
   },
 };
 </script>

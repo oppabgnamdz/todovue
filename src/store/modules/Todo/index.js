@@ -41,7 +41,7 @@ const actions = {
       URl_TODOS,
       headers(`Bearer ${rootState.token.token}`)
     );
-    const data = response.data.sort((todo1, todo2) => {
+    const data = response.data.items.sort((todo1, todo2) => {
       let dateTime1 = new Date(todo1["created_at"]);
       let dateTime2 = new Date(todo2["created_at"]);
       let time1 = dateTime1.getTime();

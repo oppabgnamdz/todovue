@@ -10,13 +10,9 @@
         <label class="label" for="password">Password</label>
         <input v-model="password" type="password" class="input" />
       </div>
-      <Button
-        :bgColor="BG_COLOR_SIGNUP"
-        :content="SIGNUP"
-        :clickEvent="handleSignUp"
-      />
+      <Button typeSignUp :clickEvent="handleSignUp">SIGN UP</Button>
     </form>
-    <router-link :to="{ name: 'SignIn' }" class="signup"
+    <router-link :to="{ name: 'SignIn' }" class="sign-up"
       >Back to Sign in !</router-link
     >
   </div>
@@ -26,7 +22,7 @@
 <script>
 import { ref } from "vue";
 import Button from "../components/Button.vue";
-import { BUTTON_LABEL, BACKGROUND_COLOR } from "../constants";
+
 import "../common/signin.css";
 import useSignUp from "../utils/useSignUp";
 
@@ -42,8 +38,6 @@ export default {
     const handleSignUp = () => useSignUp(userName.value, password.value);
 
     return {
-      BG_COLOR_SIGNUP: BACKGROUND_COLOR.BG_COLOR_SIGNIN,
-      SIGNUP: BUTTON_LABEL.SIGNUP,
       userName,
       password,
       handleSignUp,
@@ -69,7 +63,7 @@ export default {
       width: 100%;
     }
   }
-  .signup {
+  .sign-up {
     color: blue;
     text-decoration: none;
     &:hover {

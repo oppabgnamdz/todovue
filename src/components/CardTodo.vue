@@ -12,37 +12,30 @@
       />
     </div>
     <div class="card__actions">
-      <Button
-        v-if="onFocusInput"
-        :bgColor="BG_COLOR_CONFIRM"
-        :content="CONFIRM"
-        :clickEvent="enterInput"
-      />
-      <Button
-        v-if="onFocusInput"
-        :bgColor="BG_COLOR_CANCEL"
-        :content="CANCEL"
-      />
+      <Button v-if="onFocusInput" typeConfirm :clickEvent="enterInput"
+        >CONFIRM</Button
+      >
+      <Button v-if="onFocusInput" typeCancel :content="CANCEL">CANCEL</Button>
       <Button
         v-if="!onFocusInput"
-        :bgColor="BG_COLOR_DELETE"
-        :content="DELETE"
+        typeDelete
         :clickEvent="eventDelete"
         :id="todo.id"
-      />
+        >DELETE</Button
+      >
       <Button
         v-if="!onFocusInput"
-        :bgColor="BG_COLOR_EDIT"
+        typeEdit
         :content="EDIT"
         :clickEvent="editInput"
-      />
+        >EDIT</Button
+      >
     </div>
   </div>
 </template>
 
 <script>
 import Button from "./Button";
-import { BUTTON_LABEL, BACKGROUND_COLOR } from "../constants";
 import { ref } from "vue";
 import { useStore } from "vuex";
 
@@ -50,7 +43,7 @@ export default {
   props: {
     todo: {
       type: Object,
-      default: function () {}
+      default: function () {},
     },
   },
 
@@ -79,27 +72,19 @@ export default {
 
     const eventDelete = (id) => {
       store.dispatch("deleteTodo", {
-        id
+        id,
       });
     };
 
     const eventEdit = (id) => {
       store.dispatch("updateTodos", {
         id,
-        content: content.value
+        content: content.value,
       });
     };
 
     return {
       content,
-      BG_COLOR_DELETE: BACKGROUND_COLOR.BG_COLOR_DELETE,
-      BG_COLOR_EDIT: BACKGROUND_COLOR.BG_COLOR_EDIT,
-      BG_COLOR_CONFIRM: BACKGROUND_COLOR.BG_COLOR_CONFIRM,
-      BG_COLOR_CANCEL: BACKGROUND_COLOR.BG_COLOR_CANCEL,
-      DELETE: BUTTON_LABEL.DELETE,
-      CONFIRM: BUTTON_LABEL.CONFIRM,
-      EDIT: BUTTON_LABEL.EDIT,
-      CANCEL: BUTTON_LABEL.CANCEL,
       eventDelete,
       editInput,
       eventEdit,

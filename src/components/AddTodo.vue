@@ -1,13 +1,12 @@
 <template>
   <div class="add-todo">
     <input class="add-text" type="text" v-model="text" />
-    <Button :bgColor="BG_COLOR_ADD" :content="ADD" :clickEvent="addTodo" />
+    <Button typeAdd :content="ADD" :clickEvent="addTodo"> ADD </Button>
   </div>
 </template>
 
 <script>
 import Button from "./Button";
-import { BUTTON_LABEL, BACKGROUND_COLOR } from "../constants";
 import { ref } from "vue";
 import { useStore } from "vuex";
 
@@ -20,14 +19,12 @@ export default {
 
     const addTodo = () => {
       store.dispatch("addTodo", {
-        content: text.value
+        content: text.value,
       });
     };
 
     return {
       text,
-      ADD: BUTTON_LABEL.ADD,
-      BG_COLOR_ADD: BACKGROUND_COLOR.BG_COLOR_ADD,
       addTodo,
     };
   },
