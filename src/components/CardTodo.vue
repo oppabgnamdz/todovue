@@ -3,31 +3,27 @@
     <div class="card__content">
       <input type="checkbox" />
       <input
-        @blur.prevent="blurInput"
-        @focus.prevent="editInput"
-        @keydown.enter.prevent="enterInput"
+        @blur.prevent="handleBlurInput"
+        @focus.prevent="handleInputEditted"
+        @keydown.enter.prevent="handleEnterInput"
         ref="input"
         class="content"
         v-model="content"
       />
     </div>
     <div class="card__actions">
-      <Button v-if="onFocusInput" typeConfirm :clickEvent="enterInput"
+      <Button v-if="onFocusInput" typeConfirm :clickEvent="handleEnterInput"
         >CONFIRM</Button
       >
-      <Button v-if="onFocusInput" typeCancel :content="CANCEL">CANCEL</Button>
+      <Button v-if="onFocusInput" typeCancel>CANCEL</Button>
       <Button
         v-if="!onFocusInput"
         typeDelete
-        :clickEvent="eventDelete"
+        :clickEvent="deleteTodo"
         :id="todo.id"
         >DELETE</Button
       >
-      <Button
-        v-if="!onFocusInput"
-        typeEdit
-        :content="EDIT"
-        :clickEvent="editInput"
+      <Button v-if="!onFocusInput" typeEdit :clickEvent="handleInputEditted"
         >EDIT</Button
       >
     </div>
@@ -55,28 +51,28 @@ export default {
     const input = ref("");
     const onFocusInput = ref(false);
 
-    const editInput = () => {
+    const handleInputEditted = () => {
       input.value.focus();
       onFocusInput.value = true;
     };
 
-    const blurInput = () => {
+    const handleBlurInput = () => {
       setTimeout(() => {
         onFocusInput.value = false;
       }, 500);
     };
 
-    const enterInput = () => {
-      eventEdit(props.todo.id);
+    const handleEnterInput = () => {
+      updateTodo(props.todo.id);
     };
 
-    const eventDelete = (id) => {
+    const deleteTodo = (id) => {
       store.dispatch("deleteTodo", {
         id,
       });
     };
 
-    const eventEdit = (id) => {
+    const updateTodo = (id) => {
       store.dispatch("updateTodos", {
         id,
         content: content.value,
@@ -85,13 +81,13 @@ export default {
 
     return {
       content,
-      eventDelete,
-      editInput,
-      eventEdit,
+      deleteTodo,
+      handleInputEditted,
+      updateTodo,
       input,
-      enterInput,
+      handleEnterInput,
       onFocusInput,
-      blurInput,
+      handleBlurInput,
     };
   },
 };

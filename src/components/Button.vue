@@ -7,16 +7,11 @@
 <script>
 export default {
   props: {
-    bgColor: {
-      type: String,
-      required: true,
-    },
     clickEvent: {
       type: Function,
     },
     id: {
       type: String,
-      required: true,
     },
     typeAdd: {
       type: Boolean,

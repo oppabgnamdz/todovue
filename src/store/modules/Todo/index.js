@@ -30,7 +30,6 @@ const mutations = {
     state.todos = newTodos;
   },
   RESET_TODOS(state) {
-    console.log('reset');
     state.todos = [];
   },
 };

@@ -14,7 +14,6 @@
     </form>
     <span>If you don't have account. Please </span>
     <router-link :to="{ name: 'SignUp' }" class="signup">Sign up !</router-link>
-    <vue-notification-list position="top-right"></vue-notification-list>
   </div>
 </template>
 

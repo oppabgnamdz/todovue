@@ -16,7 +16,7 @@
       >Back to Sign in !</router-link
     >
   </div>
-  <vue-notification-list position="top-right"></vue-notification-list>
+ 
 </template>
 
 <script>

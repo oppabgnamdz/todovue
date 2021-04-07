@@ -1,4 +1,4 @@
-import SignIn from "./SignIn";
+import SignIn from "../uses/SignIn";
 import store from "../store";
 import router from "../router";
 import "@dafcoe/vue-notification/dist/vue-notification.css";

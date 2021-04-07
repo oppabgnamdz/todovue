@@ -9,6 +9,7 @@
     </div>
   </nav>
   <router-view />
+  <vue-notification-list position="top-right"></vue-notification-list>
 </template>
 
 <script>
@@ -19,9 +20,7 @@ export default {
   setup() {
     const store = useStore();
 
-    const token = computed(
-      () => store.state.token.token
-    );
+    const token = computed(() => store.state.token.token);
 
     const logout = () => {
       store.dispatch("addToken", "");
