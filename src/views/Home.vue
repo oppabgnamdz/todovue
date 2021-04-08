@@ -1,9 +1,9 @@
 <template>
   <div class="main-home">
     <div :class="{ blur: isLoading }">
-      <AddTodo />
+      <AddTodo @refresh="refreshTodo" />
       <div v-for="todo in todos" :key="todo.id">
-        <CardTodo :todo="todo" />
+        <CardTodo @refresh="refreshTodo" :todo="todo" />
       </div>
     </div>
     <div class="loading" v-if="isLoading">
@@ -15,26 +15,29 @@
 <script>
 import CardTodo from "../components/CardTodo";
 import AddTodo from "../components/AddTodo";
-import { onMounted, onBeforeMount, computed, ref } from "vue";
-import { useStore } from "vuex";
+import { onMounted, ref } from "vue";
+import { getTodos } from "../uses/useTodo";
+
 export default {
   components: { CardTodo, AddTodo },
 
   setup() {
-    const store = useStore();
-    const todos = computed(() => store.state.todos.todos);
+    const todos = ref([]);
     const isLoading = ref(true);
 
-    onMounted(async () => {
-      await store.dispatch("getTodos");
+    const refreshTodo = async () => {
+      isLoading.value = true;
+      console.log("refresh");
+      const data = await getTodos();
+      todos.value = data;
       isLoading.value = false;
+    };
+
+    onMounted(() => {
+      refreshTodo();
     });
 
-    onBeforeMount(() => {
-      store.commit("RESET_TODOS");
-    });
-
-    return { todos, isLoading };
+    return { todos, isLoading, refreshTodo };
   },
 };
 </script>

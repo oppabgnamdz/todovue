@@ -1,26 +1,25 @@
 <template>
   <div class="add-todo">
     <input class="add-text" type="text" v-model="text" />
-    <Button primary :onClick="addTodo"> ADD </Button>
+    <Button primary @onClick="addTodo"> ADD </Button>
   </div>
 </template>
 
 <script>
 import Button from "./Button";
 import { ref } from "vue";
-import { useStore } from "vuex";
+
+import { addTodo as add } from "../uses/useTodo";
 
 export default {
   components: { Button },
 
-  setup() {
+  setup(props, context) {
     let text = ref("");
-    const store = useStore();
 
-    const addTodo = () => {
-      store.dispatch("addTodo", {
-        content: text.value,
-      });
+    const addTodo = async () => {
+      const response = await add(text.value);
+      response ? context.emit("refresh") : "";
     };
 
     return {

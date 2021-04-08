@@ -16,10 +16,8 @@
         >CONFIRM</Button
       >
       <Button v-if="onFocusInput" secondary>CANCEL</Button>
-      <Button v-if="!onFocusInput" danger :onClick="deleteTodo"
-        >DELETE</Button
-      >
-      <Button v-if="!onFocusInput" success :onClick="handleInputEditted"
+      <Button v-if="!onFocusInput" danger @onClick="deleteTodo">DELETE</Button>
+      <Button v-if="!onFocusInput" success @onClick="handleInputEditted"
         >EDIT</Button
       >
     </div>
@@ -29,8 +27,7 @@
 <script>
 import Button from "./Button";
 import { ref } from "vue";
-import { useStore } from "vuex";
-
+import { ApiDeleteTodo, ApiUpdateTodo } from "../uses/useTodo";
 export default {
   props: {
     todo: {
@@ -41,8 +38,7 @@ export default {
 
   components: { Button },
 
-  setup(props) {
-    const store = useStore();
+  setup(props, context) {
     const content = ref(props.todo.content);
     const input = ref("");
     const onFocusInput = ref(false);
@@ -62,17 +58,14 @@ export default {
       updateTodo(props.todo.id);
     };
 
-    const deleteTodo = () => {
-      store.dispatch("deleteTodo", {
-        id: props.todo.id,
-      });
+    const deleteTodo = async () => {
+      const response = await ApiDeleteTodo(props.todo.id);
+      response ? context.emit("refresh") : "";
     };
 
-    const updateTodo = (id) => {
-      store.dispatch("updateTodos", {
-        id,
-        content: content.value,
-      });
+    const updateTodo = async (id) => {
+      const response = await ApiUpdateTodo(content.value, id);
+      response ? context.emit("refresh") : "";
     };
 
     return {
