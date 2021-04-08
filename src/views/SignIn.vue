@@ -21,7 +21,7 @@
 import { ref } from "vue";
 import Button from "../components/Button.vue";
 import "../common/signin.css";
-import useSignIn from "../utils/useSignIn";
+import useSignIn from "../uses/useSignIn";
 
 export default {
   components: { Button },

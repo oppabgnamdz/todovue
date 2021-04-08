@@ -23,7 +23,7 @@
 import { ref } from "vue";
 import Button from "../components/Button.vue";
 import "../common/signin.css";
-import useSignUp from "../utils/useSignUp";
+import useSignUp from "../uses/useSignUp";
 
 export default {
   components: { Button },

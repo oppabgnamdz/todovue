@@ -1,14 +1,16 @@
-import SignIn from "../uses/SignIn";
+import SignIn from "../utils/SignIn";
+import SignUp from "../utils/SignUp";
 import store from "../store";
 import router from "../router";
 import "@dafcoe/vue-notification/dist/vue-notification.css";
 import { useNotificationStore } from "@dafcoe/vue-notification";
-import { notification } from "./Notification";
+import { notification } from "../utils/Notification";
 const { setNotification } = useNotificationStore();
-const handleSignIn = async (userName, password) => {
+const handleSignUp = async (userName, password) => {
   try {
+    const responseSignUp = await SignUp(userName, password);
     const responseSignIn = await SignIn(userName, password);
-    if (responseSignIn.status !== 201) return;
+    if (responseSignUp.status !== 201 || responseSignIn.status !== 201) return;
     store.dispatch("addToken", responseSignIn.data.token);
     router.push({ name: "Home" });
   } catch (e) {
@@ -17,4 +19,4 @@ const handleSignIn = async (userName, password) => {
   }
 };
 
-export default handleSignIn;
+export default handleSignUp;
