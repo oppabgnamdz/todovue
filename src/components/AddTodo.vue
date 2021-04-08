@@ -1,7 +1,7 @@
 <template>
   <div class="add-todo">
     <input class="add-text" type="text" v-model="text" />
-    <Button typeAdd :clickEvent="addTodo"> ADD </Button>
+    <Button primary :onClick="addTodo"> ADD </Button>
   </div>
 </template>
 

@@ -10,7 +10,7 @@
         <label class="label" for="password">Password</label>
         <input v-model="password" type="password" class="input" />
       </div>
-      <Button typeSignIn :clickEvent="handleSignIn">SIGN IN</Button>
+      <Button danger :onClick="handleSignIn">SIGN IN</Button>
     </form>
     <span>If you don't have account. Please </span>
     <router-link :to="{ name: 'SignUp' }" class="signup">Sign up !</router-link>

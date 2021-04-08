@@ -12,18 +12,14 @@
       />
     </div>
     <div class="card__actions">
-      <Button v-if="onFocusInput" typeConfirm :clickEvent="handleEnterInput"
+      <Button v-if="onFocusInput" dark :onClick="handleEnterInput"
         >CONFIRM</Button
       >
-      <Button v-if="onFocusInput" typeCancel>CANCEL</Button>
-      <Button
-        v-if="!onFocusInput"
-        typeDelete
-        :clickEvent="deleteTodo"
-        :id="todo.id"
+      <Button v-if="onFocusInput" secondary>CANCEL</Button>
+      <Button v-if="!onFocusInput" danger :onClick="deleteTodo"
         >DELETE</Button
       >
-      <Button v-if="!onFocusInput" typeEdit :clickEvent="handleInputEditted"
+      <Button v-if="!onFocusInput" success :onClick="handleInputEditted"
         >EDIT</Button
       >
     </div>
@@ -66,9 +62,9 @@ export default {
       updateTodo(props.todo.id);
     };
 
-    const deleteTodo = (id) => {
+    const deleteTodo = () => {
       store.dispatch("deleteTodo", {
-        id,
+        id: props.todo.id,
       });
     };
 

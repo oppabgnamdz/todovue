@@ -10,7 +10,7 @@
         <label class="label" for="password">Password</label>
         <input v-model="password" type="password" class="input" />
       </div>
-      <Button typeSignUp :clickEvent="handleSignUp">SIGN UP</Button>
+      <Button danger :onClick="handleSignUp">SIGN UP</Button>
     </form>
     <router-link :to="{ name: 'SignIn' }" class="sign-up"
       >Back to Sign in !</router-link
@@ -22,7 +22,6 @@
 <script>
 import { ref } from "vue";
 import Button from "../components/Button.vue";
-
 import "../common/signin.css";
 import useSignUp from "../utils/useSignUp";
 
